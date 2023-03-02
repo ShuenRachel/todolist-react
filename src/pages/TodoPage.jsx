@@ -32,7 +32,7 @@ const TodoPage = () => {
     setInputValue(value);
   }
 
-  function handleTodo(value) {
+  function handleTodo() {
     if (inputValue.trim().length === 0) {
       console.log('nth');
       return;
@@ -52,6 +52,10 @@ const TodoPage = () => {
     setInputValue('');
   }
 
+  function handleKeyDown() {
+    handleTodo();
+  }
+
   return (
     <div>
       TodoPage
@@ -59,6 +63,7 @@ const TodoPage = () => {
       <TodoInput
         inputValue={inputValue}
         onChange={handleInput}
+        onKeyDown={handleKeyDown}
         onAddTodo={handleTodo}
       />
       <TodoCollection todos={todos} />

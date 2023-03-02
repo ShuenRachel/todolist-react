@@ -58,7 +58,7 @@ const StyledAddTodoActionContainer = styled.div`
     font-size: 13px;
     color: var(--major);
     padding-right: 5px;
-    // display: none;
+    display: none;
   }
 
   &.active {
@@ -79,6 +79,11 @@ const TodoInput = ({ inputValue, onChange, onKeyDown, onAddTodo }) => {
           value={inputValue}
           onChange={(e) => {
             onChange?.(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              onKeyDown?.();
+            }
           }}
         />
       </StyledInputContainer>
