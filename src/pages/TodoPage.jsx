@@ -1,29 +1,6 @@
 import { Footer, Header, TodoCollection, TodoInput } from 'components';
 import { useState, useEffect } from 'react';
-import { getTodos } from '../api/todos';
-
-const dummyTodos = [
-  {
-    title: 'Learn react-router',
-    isDone: true,
-    id: 1,
-  },
-  {
-    title: 'Learn to create custom hooks',
-    isDone: false,
-    id: 2,
-  },
-  {
-    title: 'Learn to use context',
-    isDone: true,
-    id: 3,
-  },
-  {
-    title: 'Learn to implement auth',
-    isDone: false,
-    id: 4,
-  },
-];
+import { getTodos, createTodo } from '../api/todos';
 
 const TodoPage = () => {
   const [inputValue, setInputValue] = useState('');
@@ -46,24 +23,33 @@ const TodoPage = () => {
     setInputValue(value);
   }
 
-  function handleAddTodo() {
+  async function handleAddTodo() {
     if (inputValue.trim().length === 0) {
-      console.log('nth');
       return;
     }
 
-    setTodos((prevTodos) => {
-      return [
-        ...prevTodos,
-        {
-          id: prevTodos.length + Math.random() * 100,
-          title: inputValue.trim(),
-          isDone: false,
-        },
-      ];
-    });
+    try {
+      const data = await createTodo({
+        title: inputValue.trim(),
+        isDone: false,
+      });
 
-    setInputValue('');
+      setTodos((prevTodos) => {
+        return [
+          ...prevTodos,
+          {
+            id: data.id,
+            title: data.title,
+            isDone: data.isDone,
+            isEdit: false,
+          },
+        ];
+      });
+
+      setInputValue('');
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   function handleKeyDown() {
