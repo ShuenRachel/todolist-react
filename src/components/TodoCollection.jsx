@@ -10,14 +10,16 @@ const TodoCollection = ({
   return (
     <div>
       {todos.map((todo) => {
-        return <TodoItem key={todo.id} todo={todo} />;
+        return (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggleDone={(id) => {
+              onToggleDone?.(id);
+            }}
+          />
+        );
       })}
-      {/* TodoCollection
-      <TodoItem />
-      <TodoItem />
-      <TodoItem />
-      <TodoItem />
-      <TodoItem /> */}
     </div>
   );
 };

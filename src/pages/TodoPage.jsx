@@ -28,11 +28,11 @@ const TodoPage = () => {
   const [inputValue, setInputValue] = useState('');
   const [todos, setTodos] = useState(dummyTodos);
 
-  function handleInput(value) {
+  function handleChange(value) {
     setInputValue(value);
   }
 
-  function handleTodo() {
+  function handleAddTodo() {
     if (inputValue.trim().length === 0) {
       console.log('nth');
       return;
@@ -53,7 +53,22 @@ const TodoPage = () => {
   }
 
   function handleKeyDown() {
-    handleTodo();
+    handleAddTodo();
+  }
+
+  function handleToggleDone(id) {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            isDone: !todo.isDone,
+          };
+        } else {
+          return todo;
+        }
+      });
+    });
   }
 
   return (
@@ -62,11 +77,11 @@ const TodoPage = () => {
       <Header />
       <TodoInput
         inputValue={inputValue}
-        onChange={handleInput}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
-        onAddTodo={handleTodo}
+        onAddTodo={handleAddTodo}
       />
-      <TodoCollection todos={todos} />
+      <TodoCollection todos={todos} onToggleDone={handleToggleDone} />
       <Footer />
     </div>
   );
