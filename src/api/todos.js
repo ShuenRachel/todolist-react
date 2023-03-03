@@ -7,14 +7,9 @@ export async function getTodos() {
 }
 
 export async function createTodo(payload) {
-  try {
-    const { title, isDone } = payload;
-    const res = await axios.post(`${baseUrl}/todos`, { title, isDone });
-    return res.data;
-  } catch (e) {
-    console.error('[Get Todos failed]:', e);
-  }
+  return await axios.post(`${baseUrl}/todos`, payload);
 }
+
 export async function patchTodo() {
   try {
   } catch (e) {

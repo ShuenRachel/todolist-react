@@ -29,7 +29,7 @@ const TodoPage = () => {
     }
 
     try {
-      const data = await createTodo({
+      const { data } = await createTodo({
         title: inputValue.trim(),
         isDone: false,
       });
