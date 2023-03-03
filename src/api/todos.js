@@ -3,12 +3,13 @@ import axios from 'axios';
 const baseUrl = 'http://localhost:3001';
 
 export async function getTodos() {
-  try {
-    const res = await axios.get(`${baseUrl}/todos`);
-    return res.data;
-  } catch (e) {
-    console.error('[Get Todos failed]:', e);
-  }
+  return axios.get(`${baseUrl}/todos`);
+  //   try {
+  //     const res = await axios.get(`${baseUrl}/todos`);
+  //     return res.data;
+  //   } catch (e) {
+  //     console.error('[Get Todos failed]:', e);
+  //   }
 }
 export async function createTodo(payload) {
   try {

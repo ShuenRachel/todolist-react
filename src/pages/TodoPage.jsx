@@ -32,8 +32,8 @@ const TodoPage = () => {
   useEffect(() => {
     async function getTodosAsync() {
       try {
-        const todos = await getTodos();
-        setTodos(todos.map((todo) => ({ ...todo, isEdit: false })));
+        const { data } = await getTodos();
+        setTodos(data.map((todo) => ({ ...todo, isEdit: false })));
       } catch (e) {
         console.error(e);
       }
