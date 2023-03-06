@@ -15,12 +15,16 @@ export async function patchTodo(payload) {
     const { id, title, isDone } = payload;
 
     const res = await axios.patch(`${baseUrl}/todos/${id}`, { title, isDone });
+
+    return res.data;
   } catch (e) {
-    console.error('[Get Todos failed]:', e);
+    console.error('[Patch Todos failed]:', e);
   }
 }
-export async function deleteTodo() {
+export async function deleteTodo(id) {
   try {
+    const res = await axios.delete(`${baseUrl}/todos/${id}`);
+    return res.data;
   } catch (e) {
     console.error('[Get Todos failed]:', e);
   }

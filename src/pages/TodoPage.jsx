@@ -1,6 +1,6 @@
 import { Footer, Header, TodoCollection, TodoInput } from 'components';
 import { useState, useEffect } from 'react';
-import { getTodos, createTodo } from '../api/todos';
+import { getTodos, createTodo, patchTodo } from '../api/todos';
 
 const TodoPage = () => {
   const [inputValue, setInputValue] = useState('');
@@ -56,19 +56,30 @@ const TodoPage = () => {
     handleAddTodo();
   }
 
-  function handleToggleDone(id) {
-    setTodos((prevTodos) => {
-      return prevTodos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            isDone: !todo.isDone,
-          };
-        } else {
-          return todo;
-        }
+  async function handleToggleDone(id) {
+    try {
+      const currentTodo = todos.find((todo) => todo.id === id);
+
+      await patchTodo({
+        id,
+        isDone: !currentTodo.isDone,
       });
-    });
+
+      setTodos((prevTodos) => {
+        return prevTodos.map((todo) => {
+          if (todo.id === id) {
+            return {
+              ...todo,
+              isDone: !todo.isDone,
+            };
+          } else {
+            return todo;
+          }
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   function handleChangeMode({ id, isEdit }) {
