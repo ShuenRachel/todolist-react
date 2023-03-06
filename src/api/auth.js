@@ -33,3 +33,17 @@ export async function signup(payload) {
     console.error('[Register failed]:', e);
   }
 }
+
+export async function checkPermission(payload) {
+  try {
+    const { data } = await axios.get(`${baseUrl}/test-token`, {
+      headers: {
+        Authorization: 'Bearer ' + payload,
+      },
+    });
+
+    return data.success;
+  } catch (e) {
+    console.error('[Test token failed]:', e);
+  }
+}

@@ -6,9 +6,9 @@ import {
 } from 'components/common/auth.styled';
 import { ACLogoIcon } from 'assets/images';
 import { AuthInput } from 'components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signup } from '../api/auth.js';
+import { signup, checkPermission } from '../api/auth.js';
 import Swal from 'sweetalert2';
 
 const SignUpPage = () => {
@@ -17,6 +17,26 @@ const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    async function checkTokenIsValid() {
+      try {
+        const authToken = localStorage.getItem('authToken');
+
+        if (!authToken) return;
+
+        const isAuthorized = await checkPermission(authToken);
+
+        if (isAuthorized) {
+          navigate('/todos');
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    checkTokenIsValid();
+  }, [navigate]);
 
   function handleUsernameInput(usernameInput) {
     setUsername(usernameInput);
