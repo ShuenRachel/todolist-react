@@ -6,8 +6,19 @@ import {
 } from 'components/common/auth.styled';
 import { ACLogoIcon } from 'assets/images';
 import { AuthInput } from 'components';
+import { useState } from 'react';
 
 const SignUpPage = () => {
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleUsernameInput(userNameInput) {}
+
+  function handleEmailInput(emailInput) {}
+
+  function handlePasswordInput(passwordInput) {}
+
   return (
     <AuthContainer>
       <div>
@@ -16,15 +27,31 @@ const SignUpPage = () => {
       <h1>建立您的帳號</h1>
 
       <AuthInputContainer>
-        <AuthInput />
+        <AuthInput
+          label="Username"
+          value={userName}
+          placeholder="Please input usename"
+          onChange={(userNameInput) => handleUsernameInput(userNameInput)}
+        />
       </AuthInputContainer>
 
       <AuthInputContainer>
-        <AuthInput />
+        <AuthInput
+          label="Email"
+          value={email}
+          placeholder="Please input email"
+          onChange={(emailInput) => handleEmailInput(emailInput)}
+        />
       </AuthInputContainer>
 
       <AuthInputContainer>
-        <AuthInput />
+        <AuthInput
+          type="password"
+          label="Password"
+          value={password}
+          placeholder="Please input password"
+          onChange={(passwordInput) => handlePasswordInput(passwordInput)}
+        />
       </AuthInputContainer>
       <AuthButton>註冊</AuthButton>
       <AuthLinkText>取消</AuthLinkText>
