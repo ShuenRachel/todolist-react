@@ -7,11 +7,13 @@ import {
 import { ACLogoIcon } from 'assets/images';
 import { AuthInput } from 'components';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../api/auth.js';
 import Swal from 'sweetalert2';
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,6 +56,8 @@ const SignUpPage = () => {
           icon: 'success',
           showConfirmButton: false,
         });
+
+        navigate('/todos');
 
         return;
       }
