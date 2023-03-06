@@ -8,14 +8,36 @@ import { ACLogoIcon } from 'assets/images';
 import { AuthInput } from 'components';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { login } from '../api/auth.js';
 
 const LoginPage = () => {
-  const [userName, setUserName] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleUsernameInput(userNameInput) {}
+  function handleUsernameInput(usernameInput) {
+    setUsername(usernameInput);
+  }
 
-  function handlePasswordInput(passwordInput) {}
+  function handlePasswordInput(passwordInput) {
+    setPassword(passwordInput);
+  }
+
+  async function handleLogin() {
+    try {
+      if (!username.trim().length || !password.trim().length) {
+        console.log('nth');
+        return;
+      }
+
+      const { success, authToken } = await login({ username, password });
+
+      if (success) {
+        localStorage.setItem('authToken', authToken);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <AuthContainer>
@@ -27,9 +49,9 @@ const LoginPage = () => {
       <AuthInputContainer>
         <AuthInput
           label="Username"
-          value={userName}
+          value={username}
           placeholder="Please input usename"
-          onChange={(userNameInput) => handleUsernameInput(userNameInput)}
+          onChange={(usernameInput) => handleUsernameInput(usernameInput)}
         />
       </AuthInputContainer>
 
@@ -42,7 +64,7 @@ const LoginPage = () => {
           onChange={(passwordInput) => handlePasswordInput(passwordInput)}
         />
       </AuthInputContainer>
-      <AuthButton>登入</AuthButton>
+      <AuthButton onClick={handleLogin}>登入</AuthButton>
       <Link to="/signup">
         <AuthLinkText>註冊</AuthLinkText>
       </Link>
