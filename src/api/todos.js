@@ -10,8 +10,11 @@ export async function createTodo(payload) {
   return await axios.post(`${baseUrl}/todos`, payload);
 }
 
-export async function patchTodo() {
+export async function patchTodo(payload) {
   try {
+    const { id, title, isDone } = payload;
+
+    const res = await axios.patch(`${baseUrl}/todos/${id}`, { title, isDone });
   } catch (e) {
     console.error('[Get Todos failed]:', e);
   }
