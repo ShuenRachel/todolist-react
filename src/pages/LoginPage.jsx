@@ -8,34 +8,20 @@ import { ACLogoIcon } from 'assets/images';
 import { AuthInput } from 'components';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login, checkPermission } from '../api/auth.js';
 import Swal from 'sweetalert2';
+import { useAuth } from 'contexts/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
+  const { login, isAuthenticated } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    async function checkTokenIsValid() {
-      try {
-        const authToken = localStorage.getItem('authToken');
-
-        if (!authToken) return;
-
-        const isAuthorized = await checkPermission(authToken);
-
-        if (isAuthorized) {
-          navigate('/todos');
-        }
-      } catch (e) {
-        console.log(e);
-      }
+    if (isAuthenticated) {
+      navigate('/todos');
     }
-
-    checkTokenIsValid();
-  }, [navigate]);
+  }, [navigate, isAuthenticated]);
 
   function handleUsernameInput(usernameInput) {
     setUsername(usernameInput);
@@ -51,11 +37,9 @@ const LoginPage = () => {
         return;
       }
 
-      const { success, authToken } = await login({ username, password });
+      const success = await login({ username, password });
 
       if (success) {
-        localStorage.setItem('authToken', authToken);
-
         Swal.fire({
           position: 'top',
           title: '登入成功！',
@@ -63,9 +47,6 @@ const LoginPage = () => {
           icon: 'success',
           showConfirmButton: false,
         });
-
-        navigate('/todos');
-
         return;
       }
     } catch (e) {

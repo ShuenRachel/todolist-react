@@ -6,18 +6,16 @@ import { useLocation } from 'react-router-dom';
 const defaultAuthContext = {
   isAuthenticated: false,
   currentMember: null,
-  register: null,
+  signup: null,
   login: null,
   logout: null,
 };
 
 const AuthContext = createContext(defaultAuthContext);
 
-export function useAuth() {
-  useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [payload, setPayload] = useState(null);
 
@@ -56,7 +54,7 @@ export function AuthProvider({ children }) {
           id: payload.sub,
           name: payload.name,
         },
-        register: async (data) => {
+        signup: async (data) => {
           const { success, authToken } = await signup({
             username: data.username,
             email: data.email,
@@ -105,4 +103,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};

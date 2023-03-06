@@ -8,35 +8,23 @@ import { ACLogoIcon } from 'assets/images';
 import { AuthInput } from 'components';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signup, checkPermission } from '../api/auth.js';
 import Swal from 'sweetalert2';
+import { useAuth } from '../contexts/AuthContext';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const { signup, isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    async function checkTokenIsValid() {
-      try {
-        const authToken = localStorage.getItem('authToken');
-
-        if (!authToken) return;
-
-        const isAuthorized = await checkPermission(authToken);
-
-        if (isAuthorized) {
-          navigate('/todos');
-        }
-      } catch (e) {
-        console.log(e);
-      }
+    if (isAuthenticated) {
+      navigate('/todos');
     }
-
-    checkTokenIsValid();
-  }, [navigate]);
+  }, [navigate, isAuthenticated]);
 
   function handleUsernameInput(usernameInput) {
     setUsername(usernameInput);
@@ -60,15 +48,13 @@ const SignUpPage = () => {
         return;
       }
 
-      const { success, authToken } = await signup({
+      const success = await signup({
         username,
         email,
         password,
       });
 
       if (success) {
-        localStorage.setItem('authToken', authToken);
-
         Swal.fire({
           position: 'top',
           title: '註冊成功！',
@@ -76,8 +62,6 @@ const SignUpPage = () => {
           icon: 'success',
           showConfirmButton: false,
         });
-
-        navigate('/todos');
 
         return;
       }
