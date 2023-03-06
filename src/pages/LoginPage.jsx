@@ -9,6 +9,7 @@ import { AuthInput } from 'components';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { login } from '../api/auth.js';
+import Swal from 'sweetalert2';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -25,7 +26,6 @@ const LoginPage = () => {
   async function handleLogin() {
     try {
       if (!username.trim().length || !password.trim().length) {
-        console.log('nth');
         return;
       }
 
@@ -33,9 +33,26 @@ const LoginPage = () => {
 
       if (success) {
         localStorage.setItem('authToken', authToken);
+
+        Swal.fire({
+          position: 'top',
+          title: '登入成功！',
+          timer: 1000,
+          icon: 'success',
+          showConfirmButton: false,
+        });
+
+        return;
       }
     } catch (e) {
       console.error(e);
+      Swal.fire({
+        position: 'top',
+        title: '登入失敗！',
+        timer: 1000,
+        icon: 'error',
+        showConfirmButton: false,
+      });
     }
   }
 
