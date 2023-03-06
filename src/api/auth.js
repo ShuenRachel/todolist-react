@@ -18,11 +18,18 @@ export async function login(payload) {
   }
 }
 
-export async function deleteTodo(id) {
+export async function signup(payload) {
   try {
-    const res = await axios.delete(`${baseUrl}/todos/${id}`);
-    return res.data;
+    const { data } = await axios.post(`${baseUrl}/register`, { ...payload });
+
+    const { authToken } = data;
+
+    if (authToken) {
+      return { success: true, ...data };
+    }
+
+    return data;
   } catch (e) {
-    console.error('[Get Todos failed]:', e);
+    console.error('[Register failed]:', e);
   }
 }
