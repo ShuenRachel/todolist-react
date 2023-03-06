@@ -97,20 +97,29 @@ const TodoPage = () => {
     });
   }
 
-  function handleSave({ id, title }) {
-    setTodos((prevTodos) => {
-      return prevTodos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            title,
-            isEdit: false,
-          };
-        } else {
-          return todo;
-        }
+  async function handleSave({ id, title }) {
+    try {
+      await patchTodo({
+        id,
+        title,
       });
-    });
+
+      setTodos((prevTodos) => {
+        return prevTodos.map((todo) => {
+          if (todo.id === id) {
+            return {
+              ...todo,
+              title,
+              isEdit: false,
+            };
+          } else {
+            return todo;
+          }
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   function handleDelete(id) {
