@@ -94,6 +94,7 @@ export const AuthProvider = ({ children }) => {
           return success;
         },
         logout: () => {
+          console.log('hi logout');
           localStorage.removeItem('authToken');
           setPayload(null);
           setIsAuthenticated(false);
