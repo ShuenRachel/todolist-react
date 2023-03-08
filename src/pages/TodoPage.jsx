@@ -18,8 +18,8 @@ const TodoPage = () => {
 
     async function getTodosAsync() {
       try {
-        const { data } = await getTodos();
-        setTodos(data.map((todo) => ({ ...todo, isEdit: false })));
+        const res = await getTodos();
+        setTodos(res?.data?.data.map((todo) => ({ ...todo, isEdit: false })));
       } catch (e) {
         console.error(e);
       }
